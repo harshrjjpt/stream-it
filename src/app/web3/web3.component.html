@@ -1,9 +1,46 @@
 <div>
-  <p class="mb-20">web3 works!</p>
-  <button
+  <div class="container mx-auto relative ">
+    <div class="text-center px-20 py-60 w-full md:w-8/12 mx-auto">
+      <h1 class="text-7xl font-bold uppercase ">WEB 3</h1>
+      <br>
+      <h2 class="text-7xl font-bold uppercase ">Transaction in ethereum</h2>
+    </div>
+   
+  </div>
+  
+  <div class="container mx-auto relative z-50">
+    <div class="text-center px-20 py-60 w-full md:w-8/12 mx-auto">
+
+      <button 
+  (click)="loginWithMetamask()"
+  
     id="loginButton"
     class="rounded-md bg-purple-500 px-5 py-2 content-center"
   >
     Login with metamask
   </button>
+  <br>
+  <br>
+  <button 
+  (click)="checkBalance()"
+  
+    id="loginButton"
+    class="rounded-md bg-purple-500 px-5 py-2 content-center"
+  >
+    checkBalance
+  </button>
+  <br>
+  <br>
+  <button
+  (click)="sendpayment()"
+   class="rounded-md bg-purple-500 px-5 py-2 content-center">send payment</button>
+
+      </div>
+      </div>
+  
+  
+  <h1>{{check}}</h1>
+  <h2>{{account}} </h2>
+  <h2 class="text-7xl font-bold uppercase mb-2" *ngIf="mybalance!==undefined">my balance : {{mybalance}} ethereum</h2>
+
 </div>
