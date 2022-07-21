@@ -21,6 +21,7 @@ export class Web3Component {
   mybalance:any;
   result:any;
   error:any;
+  networkKey:any;
 
    
 
@@ -126,7 +127,6 @@ money2:any = 200000000000000000;
  ///***********MAKING TRANSACTION LOGIC*************//// 
 
 
-
   async sendpayment() {
     let  params = [{
   to: '0x0000000000000000000000000000000000000000', // Required except during contract publications.
@@ -168,20 +168,133 @@ money2:any = 200000000000000000;
           ...this.networks[networkName]
         }
       ]
+      
     });
   } catch (err) {
     console.log(err);
   }
 };
 
+
+
 // async handleNetworkSwitch (networkName:any) => {
 //   await changeNetwork({ networkName });
 // };
 
 
+ ///***********ESTIMATION OF GAS *************//// 
+ mygasprice:any;
+ mygasquantity:any;
+
+ async estGasPrice() {
+  this.mygasprice = await window.ethereum.request({
+    method: "eth_gasPrice",
+    params: [],
+    "id":1,
+    "jsonrpc":"2.0"
+  });
+  this.mygasprice = parseInt(this.mygasprice);
+  console.log(this.mygasprice);
+
+ } 
+
+///***********ESTIMATION OF GAS QUANTITY *************//// 
+
+ async estGasQuantity() {
+  this.mygasquantity = await window.ethereum.request({
+    method: "eth_estimateGas",
+    params: [
+      {"from":"0x8D97689C9818892B700e27F316cc3E41e17fBeb9",
+      "to":"0xd3CdA913deB6f67967B99D67aCDFa1712C293601",
+      "value":"0x186a0"}
+    ],
+    "id":1,
+    "jsonrpc":"2.0"
+  });
+  this.mygasquantity = parseInt(this.mygasquantity);
+  console.log(this.mygasquantity);
+
+ } 
+
+
+///***********change tokens *************//// 
+
+
+ tokenAddress = '0xd00981105e61274c8a5cd5a88fe7e037d935b513';
+ tokenSymbol = 'TUT';
+ tokenDecimals = 18;
+ tokenImage = 'http://placekitten.com/200/300';
+
+ celoUSDAddress = '0x765de816845861e75a25fca122bb6898b8b1282a';
+ celoUSDSymbol = 'cUSD';
+ celoUSDDecimals = 18;
+
+ polygonUSDT = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f';
+ polygonUSDTSymbol = 'USDT';
+ polygonUSDTSymbolDecimals = 6;
 
 
 
 
+
+ async wasAdded(adr:any, sym:string, dec:any) {
+   await window.ethereum.request({
+    method: 'wallet_watchAsset',
+    params: { 
+      type: 'ERC20', // Initially only supports ERC20, but eventually more!
+      options: {
+        address: adr, // The address that the token is at.
+        symbol: sym, // A ticker symbol or shorthand, up to 5 chars.
+        decimals: dec, // The number of decimals in the token
+        // image: this.tokenImage, // A string url of the token logo
+      },
+    },
+  });
+}
+
+checkNetwork() {
+  this.networkKey = window.ethereum.networkVersion;
+  console.log(window.ethereum.networkVersion);
+
+  return this.networkKey;
+}
+
+
+
+//**********MAKE PAYMENT WITH PARTICULAR TOKEN************//
+
+//  getDataFieldValue(tokenRecipientAddress:any, tokenAmount:any) {
+//   const web3 = new Web3();
+//   const TRANSFER_FUNCTION_ABI = {"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"};
+//   return web3.eth.abi.encodeFunctionCall(TRANSFER_FUNCTION_ABI, [
+//       tokenRecipientAddress,
+//       tokenAmount
+//   ]);
+// }
+
+// async sendpayment3() {
+//   let  params = [{
+// to: '0x0000000000000000000000000000000000000000', // Required except during contract publications.
+// from: this.account, // must match user's active address.
+// data: this.getDataFieldValue(0x765de816845861e75a25fca122bb6898b8b1282a, Number(this.money).toString(16),),
+// value: Number(this.money).toString(16), // Only required to send ether to the recipient from the initiating external account.
+//   }]
+//   this.result = window.ethereum.request({method: "eth_sendTransaction", params}).catch((err:any)=> {
+//     console.log(err);
+//   })
+//}
+
+// async sendpayment3() {
+//   let  params = [{
+// to: '0x0000000000000000000000000000000000000000', // Required except during contract publications.
+// from: this.account, // must match user's active address.
+//   data: 0x765de816845861e75a25fca122bb6898b8b1282a.methods
+//         .transfer("0x0000000000000000000000000000000000000000", "0.0001")
+//         .encodeABI(),
+//   }]
+//   this.result = window.ethereum.request({method: "eth_sendTransaction", params}).catch((err:any)=> {
+//     console.log(err);
+//   })
+// }
 
 }
