@@ -24,14 +24,44 @@
             </div>
             </div>
 
+
+            <div *ngIf="this.web_3.accountMain!==null" class=" text-center py-4 lg:px-4">
+              <div class="p-2 bg-indigo-800 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
+                <span class="flex rounded-full bg-indigo-500 uppercase px-2 py-1 text-xs font-bold mr-3"> <img class="w-4"  src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1200px-MetaMask_Fox.svg.png" alt="metamask">
+                  Metamask Address</span>
+                <span class="font-semibold mr-2 text-left flex-auto">{{this.web_3.account}}</span>
+                <svg class="fill-current opacity-75 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg>
+              </div>
+            </div>
+
+
         <button 
-        (click)="loginWithMetamask()"
+        *ngIf="this.web_3.loader==='OFF'" 
+        (click)="this.web_3.mainLogin()"
         
           id="loginButton"
           class="rounded-md bg-purple-500 px-5 py-2 content-center"
         >
           Login with metamask
         </button>
+        
+        <div class="inline-flex items-center">
+          <button type="button"
+          [ngClass]="this.web_3.loader"
+          class="hello inline-flex items-center px-8 py-2 text-sm font-semibold leading-6 text-white transition duration-150 ease-in-out bg-indigo-500 rounded-md shadow cursor-not-allowed hover:bg-indigo-400"
+          disabled="">
+          <svg class="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+              </path>
+          </svg>
+          {{this.web_3.metamaskButtonMessage}}
+      </button>
+        </div>
+
+       
         <br>
         <br>
         <button 
@@ -98,6 +128,12 @@
        (click)="checkNetwork()"
         class="bg-yellow-700 rounded-md  px-5 py-2 content-center">check network</button>
        
+        <br>
+        <br>
+        <button 
+        (click)="changeasset()"
+         class="bg-yellow-700 rounded-md  px-5 py-2 content-center">change asset</button>
+        
       </div>
 
      
